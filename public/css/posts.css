@@ -1,0 +1,22 @@
+.btnblock__posts {
+    width: max-content;
+    gap: 10px;
+    display: flex;
+    flex-direction: row;
+}
+.btn__posts {
+    width: max-content;
+}
+@media (max-width: 767px) {
+    .btnblock__posts {
+        flex-direction: column;
+    }
+    .btn__posts {
+        width: 90px;
+    }
+    #btn-success__posts, .btn.btn-primary, .btn.btn-danger {
+        width: 90px;
+        line-height: 15px;
+        font-size: 15px;
+    }
+}

@@ -1,0 +1,35 @@
+<%- include("partials/mainheadblock.ejs") -%>
+
+    <body>
+        <%- include("partials/mainheader.ejs") -%>
+            <div class="container">
+                <form method="post" action="/new_post">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" name="title" class="form-control" id="title" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select name="category" class="form-control" id="category" required>
+                            <option value="Development">Development</option>
+                            <option value="Aviation">Aviation</option>
+                            <option value="ART">ART</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="body">Body</label>
+                        <textarea name="body" class="form-control" id="body" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="hashtag">Hashtag</label>
+                        <textarea name="hashtag" class="form-control" id="hashtag" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </div>
+
+            <!-- JavaScript -->
+            <%- include("partials/scriptblock.ejs") %>
+    </body>
+
+    </html>

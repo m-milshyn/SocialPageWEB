@@ -1,0 +1,92 @@
+.comment-container {
+    width: 25rem;
+    margin-top: 20px;
+}
+
+.card-body {
+    width: 15rem;
+}
+
+.card-link.delete {
+    color: rgb(255, 80, 80);
+}
+
+.card-title {
+    font-style: italic;
+}
+
+.card {
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border-color: rgba(56, 47, 47, 0.404);
+}
+
+.card:last-child {
+    margin-bottom: 0;
+}
+
+#post-title {
+    font-size: 70px;
+    margin-top: 20px;
+}
+
+#main-text-show {
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    white-space: pre-line;
+    overflow: hidden;
+    text-align: justify;
+    font-size: 22px;
+    font-family: "Popping-Regular";
+    color: rgb(255, 255, 255);
+}
+
+#post-author {
+    font-family: "Poppins-Thin";
+    font-style: italic;
+    color: rgb(143, 143, 143);
+}
+
+#post-category{
+    font-family: "Poppins-Thin";
+    color: rgb(0, 115, 255);
+    font-style: italic;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+#hashtag-show {
+    color: #A4DB0A;
+}
+#hashtag-show span {
+    margin-left: 30px;
+    color: #8400ff;
+}
+
+.comment-container h2 {
+    font-size: 20px;
+    color: #A4DB0A;
+}
+
+.leave-comment-container h2 {
+    font-size: 20px;
+    color: #A4DB0A;
+}
+
+p.card-text {
+    color: black;
+}
+
+label {
+    color: #A4DB0A;
+}
+
+@media (max-width: 767px) { 
+    .comment-container {
+        width: 15rem;
+        margin-top: 20px;
+    }
+    .card-body {
+        width: 15rem;
+    }
+}

@@ -1,0 +1,58 @@
+<%- include("partials/mainheadblock.ejs") -%>
+
+    <body>
+        <%- include("partials/mainheader.ejs") -%>
+            <div class="container posts">
+                <h1>Posts</h1>
+                <p>Total count: <%- posts.length %>
+                </p>
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% posts.forEach (function (post) { %>
+                            <td>
+                                <%- post["id"] %>
+                            </td>
+                            <td>
+                                <%- post["title"] %>
+                            </td>
+                            <td>
+                                <%- post["category"] %>
+                            </td>
+                            <td>
+                                <%- post["author"] %>
+                            </td>
+                            <td>
+                                <div class="btnblock__posts">
+                                    <div class="btn__posts">
+                                        <a href="/posts/<%- post['id'] %>/show" class="btn btn-primary">Show</a>
+                                    </div>
+                                    <div class="btn__posts">
+                                        <a href="/posts/<%- post['id'] %>/edit" id="btn-success__posts"
+                                            class="btn btn-success">Edit</a>
+                                    </div>
+                                    <div class="btn__posts">
+                                        <a href="/posts/<%- post['id'] %>/delete" class="btn btn-danger">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+                <a href="/new_post" class="btn btn-success">Create New Post</a>
+                <!-- JavaScript -->
+                <%- include("partials/scriptblock.ejs") %>
+
+    </body>
+
+
+    </html>

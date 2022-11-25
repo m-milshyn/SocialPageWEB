@@ -1,0 +1,31 @@
+/*--------------------------FONTS--------------------------*/
+
+@font-face {
+    font-family: "NAMU-Pro";
+    src: url("../fonts/NAMU-Pro.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Poppins-Regular";
+    src: url("../fonts/Poppins-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Poppins-Light";
+    src: url("../fonts/Poppins-Light.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Poppins-Thin";
+    src: url("../fonts/Poppins-Thin.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+/*---------------------------------------------------------*/

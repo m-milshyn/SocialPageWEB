@@ -1,0 +1,36 @@
+<%- include("partials/mainheadblock.ejs") -%>
+
+    <body>
+        <%- include("partials/mainheader.ejs") -%>
+            <div class="container">
+                <section class="page-main-block">
+                    <% posts.forEach (function (post) { %>
+                        <article class="article-blog-block">
+                            <div class="blog-block-h1">
+                                <h1>
+                                    <%- post["title"] %>
+                                </h1>
+                            </div>
+                            <div class="blog-block-category">
+                                <p>
+                                    category: <%- post["category"] %>
+                                </p>
+                            </div>
+                            <div class="blog-block-p">
+                                <p>
+                                    <%- post["body"] %>
+                                </p>
+                            </div>
+                            <div class="blog-block-button-readmore">
+                                <a href="/posts/<%- post['id'] %>/show">
+                                    <span>Read more</span>
+                                </a>
+                            </div>
+                        </article>
+                        <% }) %>
+                </section>
+            </div>
+            <%- include("partials/scriptblock.ejs") %>
+    </body>
+
+    </html>

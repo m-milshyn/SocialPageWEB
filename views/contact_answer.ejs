@@ -1,0 +1,18 @@
+<%- include("partials/header.ejs") %>
+
+    <body>
+        <div class="container">
+            <%- include("partials/navbar.ejs") %>
+                <h1>Thank you, <%- formData.name %>
+                </h1>
+                <p>Your message is: <%- formData.message %>
+                </p>
+                <p>We will send the answer to <%- formData.email %>
+                </p>
+        </div>
+
+        <!-- JavaScript -->
+        <%- include("partials/scriptblock.ejs") %>
+    </body>
+
+    </html>

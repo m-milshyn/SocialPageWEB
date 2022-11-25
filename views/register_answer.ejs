@@ -1,0 +1,15 @@
+<%- include("partials/mainheadblock.ejs") -%>
+
+    <body>
+        <%- include("partials/mainheader.ejs") -%>
+            <div class="container">
+                <div class="alert alert-success" role="alert">
+                    Thank you for registration, <%- formData.name %>!
+                </div>
+                You can now
+                <a href="/login">Login</a>
+            </div>
+            <%- include("partials/scriptblock.ejs") %>
+    </body>
+
+    </html>

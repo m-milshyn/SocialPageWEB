@@ -1,0 +1,29 @@
+<%- include("partials/mainheadblock.ejs") -%>
+
+    <body>
+        <%- include("partials/mainheader.ejs") -%>
+            <div class="container">
+
+                <h1>Profile</h1>
+                <form method="post" action="/profile">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" class="form-control" id="name" value="<%- currentUser.name %>"
+                            placeholder="John" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" name="email" class="form-control" id="email"
+                            value="<%- currentUser.email %>" placeholder="name@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input name="password" class="form-control" id="password" type="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Edit Profile</button>
+                </form>
+            </div>
+            <%- include("partials/scriptblock.ejs") %>
+    </body>
+
+    </html>

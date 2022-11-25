@@ -1,0 +1,58 @@
+<%- include("partials/mainheadblock.ejs") -%>
+
+    <body>
+        <%- include("partials/mainheader.ejs") -%>
+            <form class="main-block-search" action="/search" method="post">
+                <div class="main-block-search-button">
+                    <input type="text" id="search" name="search" placeholder="Search" required>
+                    <button type="submit" class="search__btn">Search</button>
+                </div>
+            </form>
+            <form class="main-block-search sort" action="/search/sort" method="post">
+                <div class="main-block-search-button sort">
+                    <select id="column" name="column" placeholder="" required>
+                        <option value="title">Title</option>
+                        <option value="category">Category</option>
+                    </select>
+                    <select id="order" name="order" placeholder="" required>
+                        <option value="ASC">Ascending</option>
+                        <option value="DESC">Descending</option>
+                    </select>
+                    <button type="submit" class="search__btn sort">Sort</button>
+                </div>
+            </form>
+            <div class="container__search">
+                <div class="block-search-h1">
+                    <h1>Search results:</h1>
+                </div>
+                <section class="page-main-block-search">
+                    <% posts.forEach (function (post) { %>
+                        <article class="article-blog-block-search">
+                            <div class="blog-block-search-h1">
+                                <h1>
+                                    <%- post['title'] %>
+                                </h1>
+                            </div>
+                            <div class="blog-block-search-category">
+                                <p>
+                                    Category: <%- post['category'] %>
+                                </p>
+                            </div>
+                            <div class="blog-block-search-hashtag">
+                                <p>
+                                    <%- post['hashtag'] %>
+                                </p>
+                            </div>
+                            <div class="blog-block-button-readmore search">
+                                <a href="/posts/<%- post['id'] %>/show">
+                                    <span>Read more</span>
+                                </a>
+                            </div>
+                        </article>
+                        <% }) %>
+                </section>
+            </div>
+            <%- include("partials/scriptblock.ejs") %>
+    </body>
+
+    </html>
