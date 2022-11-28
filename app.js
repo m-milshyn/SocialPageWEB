@@ -23,6 +23,9 @@ function setCurrentUser(req, res, next) {
         var params = [req.session.userId]
         db.get(sql, params, (err, row) => {
             if (row !== undefined) {
+                if (row["email"] === "admin@gmail.com") {
+                    req.session.Admin = true
+                }
                 res.locals.currentUser = row
                 req.session.userFailed = row["failed_login"]
             }
@@ -76,7 +79,7 @@ app.get('/new_post', function (req, res) {
 })
 
 app.get('/register', function (req, res) {
-    res.render('register', { activePage: "register" })
+    res.render('register', { activePage: "register", error: "" })
 })
 
 app.get('/login', function (req, res) {
@@ -89,6 +92,17 @@ app.get('/profile', checkAuth, function (req, res) {
 
 
 app.get('/posts', function (req, res) {
+    if (req.session.Admin) {
+        var sql = "SELECT * FROM posts"
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                res.status(400)
+                res.send("database error:" + err.message)
+                return;
+            }
+            res.render('posts', { activePage: "posts", posts: rows })
+        });
+    }
     var params = [req.session.userId]
     var sql = "SELECT * FROM posts WHERE id_user = ?"
     db.all(sql, params, (err, rows) => {
@@ -121,23 +135,25 @@ app.post('/contact', function (req, res) {
 })
 
 app.post('/new_post', function (req, res) {
-    var data = [
-        req.session.userId,
-        req.body.title,
-        req.session.userName,
-        req.body.category,
-        req.body.body,
-        req.body.hashtag
-    ]
-    var sql = "INSERT INTO posts (id_user, title, author, category, body, hashtag) VALUES (?,?,?,?,?,?)"
-    db.run(sql, data, function (err, result) {
-        if (err) {
-            res.status(400)
-            res.send("database error:" + err.message)
-            return;
-        }
-        res.render('newpost_answer', { activePage: "new_post", formDataPost: req.body })
-    });
+    if (req.session.loggedIn) {
+        var data = [
+            req.session.userId,
+            req.body.title,
+            req.session.userName,
+            req.body.category,
+            req.body.body,
+            req.body.hashtag
+        ]
+        var sql = "INSERT INTO posts (id_user, title, author, category, body, hashtag) VALUES (?,?,?,?,?,?)"
+        db.run(sql, data, function (err, result) {
+            if (err) {
+                res.status(400)
+                res.send("database error:" + err.message)
+                return;
+            }
+            res.render('newpost_answer', { activePage: "new_post", formDataPost: req.body })
+        });
+    }
 })
 app.post('/posts/:id/edit', function (req, res) {
     var data = [
@@ -195,7 +211,7 @@ app.get('/posts/:id/show', function (req, res) {
                 res.send("database error:" + err.message)
                 return;
             }
-            res.render("show_post", { activePage: "posts", Post: row, comments: rows })
+            res.render("show_post", { activePage: "posts", Post: row, comments: rows, ActiveUser: req.session.userId })
         });
     });
 })
@@ -219,35 +235,46 @@ app.post('/posts/:id/show/comment', function (req, res) {
 })
 
 app.get('/posts/:id/show/:comment_id/delete', function (req, res) {
-    var sql = "DELETE FROM comment WHERE comment_id = ?"
-    var postid = req.params.id
-    var params = [req.params.comment_id]
-    db.get(sql, params, (err, row) => {
-        if (err) {
-            res.status(400)
-            res.send("database error:" + err.message)
-            return;
-        }
-        res.redirect('/posts/' + postid + '/show')
-    });
-})
-
-app.post('/register', function (req, res) {
-    bcrypt.hash(req.body.password, 10, function (err, hash) {
-        var data = [
-            req.body.name,
-            req.body.email,
-            hash
-        ]
-        var sql = "INSERT INTO user (name, email, password, failed_login) VALUES (?,?,?, 0)"
-        db.run(sql, data, function (err, result) {
+    if (req.session.loggedIn) {
+        var sql = "DELETE FROM comment WHERE (comment_id = ? AND user_id = ?)"
+        var postid = req.params.id
+        var params = [req.params.comment_id, req.session.userId]
+        db.get(sql, params, (err, row) => {
             if (err) {
                 res.status(400)
                 res.send("database error:" + err.message)
                 return;
             }
-            res.render('register_answer', { activePage: "register", formData: req.body })
+            res.redirect('/posts/' + postid + '/show')
         });
+    }
+})
+
+app.post('/register', function (req, res) {
+    var sql1 = "SELECT * FROM user WHERE email = ?"
+    var params1 = [req.body.email]
+    db.all(sql1, params1, function (err, rows) {
+        if (rows !== "undefined") {
+            bcrypt.hash(req.body.password, 10, function (err, hash) {
+                var data = [
+                    req.body.name,
+                    req.body.email,
+                    hash
+                ]
+                var sql = "INSERT INTO user (name, email, password, failed_login) VALUES (?,?,?, 0)"
+                db.run(sql, data, function (err, result) {
+                    if (err) {
+                        res.status(400)
+                        res.send("database error:" + err.message)
+                        return;
+                    }
+                    res.render('register_answer', { activePage: "register", formData: req.body })
+                });
+            });
+        }
+        else {
+            res.render('register', { activePage: "register", error: "A user with this email address already exists" })
+        }
     });
 })
 

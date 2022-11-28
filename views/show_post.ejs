@@ -34,8 +34,10 @@
                                 <p class="card-text">
                                     <%- comment['comment_body'] %>
                                 </p>
-                                <a href="/posts/<%- Post['id'] %> /show/<%- comment['comment_id'] %>/delete"
-                                    class="card-link delete">Delete</a>
+                                <% if(ActiveUser==comment[user_id]) { %>
+                                    <a href="/posts/<%- Post['id'] %> /show/<%- comment['comment_id'] %>/delete"
+                                        class="card-link delete">Delete</a>
+                                    <% } %>
                             </div>
                         </div>
                         <% }) %>

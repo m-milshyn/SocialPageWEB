@@ -1,0 +1,26 @@
+<%- include("partials/mainheadblock.ejs") %>
+
+    <body>
+        <div class="container">
+            <%- include("partials/mainheader.ejs") %>
+                <div class="alert alert-success" role="alert">
+                    New post is created!
+                </div>
+                <p>Title: <%- formDataPost.title %>
+                </p>
+                <p>Author: <%- formDataPost.author %>
+                </p>
+                <p>Category: <%- formDataPost.category %>
+                </p>
+                <p>Body: <%- formDataPost.body %>
+                </p>
+                <p>Hashtags: <%- formDataPost.hashtag %>
+                </p>
+        </div>
+
+        <!-- JavaScript -->
+        <script src="/jquery/jquery.min.js"></script>
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+    </body>
+
+    </html>
