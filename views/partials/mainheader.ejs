@@ -19,35 +19,56 @@
                                     <a href="/" class="header__link">home</a>
                                 </li>
                                 <% if (typeof currentUser !=='undefined' ) { %>
-                                    <li class="nav__item <%- activePage=='search' ? 'active' : '' %>">
-                                        <a href="/search" class="header__link">search</a>
-                                    </li>
-                                    <li class="nav__item <%- activePage=='posts' ? 'active' : '' %>">
-                                        <a href="/posts" class="header__link">Posts</a>
-                                    </li>
-                                    <li class="nav__item <%- activePage=='new_post' ? 'active' : '' %>">
-                                        <a href="/new_post" class="header__link">New post</a>
-                                    </li>
-                                    <li class="nav__item <%- activePage=='contact' ? 'active' : '' %>">
-                                        <a href="/contact" class="header__link">Contact</a>
-                                    </li>
-                                    <li class="nav__item">
-                                        <a href=" /logout" class="header__link">Logout</a>
-                                    </li>
-                                    <% } else { %>
+                                    <% if( currentUser["email"]==="admin@gmail.com" ) { %>
                                         <li class="nav__item <%- activePage=='search' ? 'active' : '' %>">
                                             <a href="/search" class="header__link">search</a>
                                         </li>
-                                        <li class="nav__item <%- activePage=='login' ? 'active' : '' %>">
-                                            <a href="/login" class="header__link">login</a>
+                                        <li class="nav__item <%- activePage=='posts' ? 'active' : '' %>">
+                                            <a href="/posts" class="header__link">Admin Posts</a>
                                         </li>
-                                        <li class="nav__item <%- activePage=='register' ? 'active' : '' %>">
-                                            <a href="/register" class="header__link">singup</a>
+                                        <li class="nav__item <%- activePage=='admin_user' ? 'active' : '' %>">
+                                            <a href="/admin_user" class="header__link">Admin User</a>
+                                        </li>
+                                        <li class="nav__item <%- activePage=='new_post' ? 'active' : '' %>">
+                                            <a href="/new_post" class="header__link">New post</a>
                                         </li>
                                         <li class="nav__item <%- activePage=='contact' ? 'active' : '' %>">
-                                            <a href="/contact" class="header__link">feedback</a>
+                                            <a href="/contact" class="header__link">Contact</a>
                                         </li>
-                                        <% } %>
+                                        <li class="nav__item">
+                                            <a href=" /logout" class="header__link">Logout</a>
+                                        </li>
+                                        <% } else { %>
+                                            <li class="nav__item <%- activePage=='search' ? 'active' : '' %>">
+                                                <a href="/search" class="header__link">search</a>
+                                            </li>
+                                            <li class="nav__item <%- activePage=='posts' ? 'active' : '' %>">
+                                                <a href="/posts" class="header__link">Posts</a>
+                                            </li>
+                                            <li class="nav__item <%- activePage=='new_post' ? 'active' : '' %>">
+                                                <a href="/new_post" class="header__link">New post</a>
+                                            </li>
+                                            <li class="nav__item <%- activePage=='contact' ? 'active' : '' %>">
+                                                <a href="/contact" class="header__link">Contact</a>
+                                            </li>
+                                            <li class="nav__item">
+                                                <a href=" /logout" class="header__link">Logout</a>
+                                            </li>
+                                            <% } %>
+                                                <% } else { %>
+                                                    <li class="nav__item <%- activePage=='search' ? 'active' : '' %>">
+                                                        <a href="/search" class="header__link">search</a>
+                                                    </li>
+                                                    <li class="nav__item <%- activePage=='login' ? 'active' : '' %>">
+                                                        <a href="/login" class="header__link">login</a>
+                                                    </li>
+                                                    <li class="nav__item <%- activePage=='register' ? 'active' : '' %>">
+                                                        <a href="/register" class="header__link">singup</a>
+                                                    </li>
+                                                    <li class="nav__item <%- activePage=='contact' ? 'active' : '' %>">
+                                                        <a href="/contact" class="header__link">feedback</a>
+                                                    </li>
+                                                    <% } %>
                             </ul>
                         </nav>
         </div>
