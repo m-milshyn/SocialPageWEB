@@ -28,6 +28,7 @@ var db = new sqlite3.Database(DBSOURCE, (err) => {
         db.run(`CREATE TABLE comment (
             comment_id INTEGER PRIMARY KEY AUTOINCREMENT,
             id_post INTEGER,
+            user_id INTEGER,
             comment_author text,
             comment_body text
           )`,

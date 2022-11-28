@@ -34,8 +34,10 @@
                                 <p class="card-text">
                                     <%- comment['comment_body'] %>
                                 </p>
-                                <a href="/posts/<%- Post['id'] %> /show/<%- comment['comment_id'] %>/delete"
-                                    class="card-link delete">Delete</a>
+                                <% if((ActiveUser==comment['user_id']) || (Admin)) { %>
+                                    <a href="/posts/<%- Post['id'] %> /show/<%- comment['comment_id'] %>/delete"
+                                        class="card-link delete">Delete</a>
+                                    <% } %>
                             </div>
                         </div>
                         <% }) %>
@@ -43,19 +45,25 @@
                                 <h2>
                                     Leave comment:
                                 </h2>
-                                <form method="post" action="/posts/<%- Post['id'] %>/show/comment">
-                                    <div class="form-group">
-                                        <label for="comment_author">Author</label>
-                                        <input type="text" name="comment_author" class="form-control"
-                                            id="comment_author" placeholder="John" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="comment_body">Body</label>
-                                        <textarea name="comment_body" class="form-control" id="comment_body" rows="3"
-                                            placeholder="Your comment" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Send</button>
-                                </form>
+                                <%- console.log(error) %>
+                                    <% if (error !=="" ) { %>
+                                        <div class="alert alert-danger" role="alert">
+                                            <%- error %>. try to <a href="/login">login</a>
+                                        </div>
+                                        <% } %>
+                                            <form method="post" action="/posts/<%- Post['id'] %>/show/comment">
+                                                <div class="form-group">
+                                                    <label for="comment_author">Author</label>
+                                                    <input type="text" name="comment_author" class="form-control"
+                                                        id="comment_author" placeholder="John" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="comment_body">Body</label>
+                                                    <textarea name="comment_body" class="form-control" id="comment_body"
+                                                        rows="3" placeholder="Your comment" required></textarea>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Send</button>
+                                            </form>
                             </div>
                 </div>
         </div>

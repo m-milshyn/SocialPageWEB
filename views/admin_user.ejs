@@ -1,0 +1,56 @@
+<%- include("partials/mainheadblock.ejs") -%>
+
+    <body>
+        <%- include("partials/mainheader.ejs") -%>
+            <div class="container posts">
+                <h1>Users</h1>
+                <p>Total count: <%- users.length %>
+                </p>
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Failed_login</th>
+                            <th scope="col">Control</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach (function (user) { %>
+                            <td>
+                                <%- user["user_id"] %>
+                            </td>
+                            <td>
+                                <%- user["name"] %>
+                            </td>
+                            <td>
+                                <%- user["email"] %>
+                            </td>
+                            <td>
+                                <%- user["failed_login"] %>
+                            </td>
+                            <td>
+                                <div class="btnblock__posts">
+                                    <div class="btn__posts">
+                                        <a href="/admin_user/<%- user['user_id'] %>/edit" id="btn-success__posts"
+                                            class="btn btn-success">Edit</a>
+                                    </div>
+                                    <div class="btn__posts">
+                                        <a href="/admin_user/<%- user['user_id'] %>/delete"
+                                            class="btn btn-danger">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+                <a href="/new_post" class="btn btn-success">Create New Post</a>
+                <!-- JavaScript -->
+                <%- include("partials/scriptblock.ejs") %>
+
+    </body>
+
+
+    </html>
