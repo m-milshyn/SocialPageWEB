@@ -113,48 +113,6 @@ app.get('/admin_user/:id/delete', function (req, res) {
         res.redirect('/admin_user')
     });
 })
-<<<<<<< HEAD
-app.get('/admin_user/:id/edit', function (req, res) {
-    var sql = "SELECT * FROM user WHERE user_id = ?"
-    var params = [req.params.id]
-    db.get(sql, params, (err, row) => {
-        if (err) {
-            res.status(400)
-            res.send("database error:" + err.message)
-            return;
-        }
-        res.render('edit_user', { user: row, activePage: "admin_user" })
-    });
-})
-app.post('/admin_user/:id/edit', function (req, res) {
-    bcrypt.hash(req.body.password, 10, function (err, hash) {
-        var data = [
-            req.body.name,
-            req.body.email,
-            hash,
-            req.body.failed_login,
-            req.params.id
-        ]
-        db.run(
-            `UPDATE user SET
-         name = COALESCE(?,name),
-         email = COALESCE(?,email),
-         password = COALESCE(?,password),
-         failed_login = COALESCE(?,failed_login)
-         WHERE user_id = ?`,
-            data,
-            function (err, result) {
-                if (err) {
-                    res.status(400)
-                    res.send("database error:" + err.message)
-                    return;
-                }
-                res.redirect('/admin_user')
-            });
-    })
-})
-=======
->>>>>>> b285a9ab0d97cbe194786148a7dc1104414f3f8f
 
 
 app.get('/posts', function (req, res) {
@@ -262,11 +220,8 @@ app.get('/posts/:id/delete', function (req, res) {
 })
 
 app.get('/posts/:id/show', function (req, res) {
-    console.log("IM ALIVE KURWA")
-    console.log(req.locals.ErrorMsg)
     var sql = "SELECT * FROM posts WHERE id = ?"
     var params = [req.params.id]
-    req.session.ErrorMsg = ""
     db.get(sql, params, (err, row) => {
         if (err) {
             res.status(400)
@@ -280,12 +235,7 @@ app.get('/posts/:id/show', function (req, res) {
                 res.send("database error:" + err.message)
                 return;
             }
-<<<<<<< HEAD
-            console.log(req.locals.ErrorMsg)
-            res.render("show_post", { activePage: "posts", Post: row, comments: rows, ActiveUser: req.session.userId, error: req.session.ErrorMsg })
-=======
             res.render("show_post", { activePage: "posts", Post: row, comments: rows, ActiveUser: req.session.userId })
->>>>>>> b285a9ab0d97cbe194786148a7dc1104414f3f8f
         });
     });
 })
@@ -295,37 +245,20 @@ app.post('/posts/:id/show/comment', function (req, res) {
     if (req.session.loggedIn) {
         var data = [
             req.params.id,
-<<<<<<< HEAD
-            req.session.userId,
-            req.body.comment_author,
-            req.body.comment_body
-        ]
-        var sql = "INSERT INTO comment (id_post, user_id, comment_author, comment_body) VALUES (?,?,?,?)"
-=======
             req.body.comment_author,
             req.body.comment_body
         ]
         var sql = "INSERT INTO comment (id_post, comment_author, comment_body) VALUES (?,?,?)"
->>>>>>> b285a9ab0d97cbe194786148a7dc1104414f3f8f
         db.run(sql, data, function (err, result) {
             if (err) {
                 res.status(400)
                 res.send("database error:" + err.message)
                 return;
             }
-<<<<<<< HEAD
-            req.session.ErrorMsg = ""
-            res.redirect('/posts/' + postid + '/show')
-        });
-    } else {
-        req.session.ErrorMsg = "Login on site for leave comment"
-        res.redirect('/posts/' + postid + '/show')
-=======
             res.redirect("/posts/" + postid + "/show")
         });
     } else {
         res.render("/posts/" + postid + "/show", { activePage: "posts", })
->>>>>>> b285a9ab0d97cbe194786148a7dc1104414f3f8f
     }
 })
 
