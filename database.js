@@ -39,6 +39,19 @@ var db = new sqlite3.Database(DBSOURCE, (err) => {
                     console.log("Table comment is created")
                 }
             });
+        db.run(`CREATE TABLE feedback (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name text,
+            email text,
+            body text
+          )`,
+            (err) => {
+                if (err) {
+                    console.log("Table feedback id already created:" + err.message)
+                } else {
+                    console.log("Table feedback is created")
+                }
+            });
         db.run(`CREATE TABLE user (
             user_id INTEGER PRIMARY KEY AUTOINCREMENT,
             name text,

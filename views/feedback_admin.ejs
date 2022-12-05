@@ -3,34 +3,34 @@
     <body>
         <%- include("partials/mainheader.ejs") -%>
             <div class="container posts">
-                <h1>Posts</h1>
-                <p>Total count: <%- posts.length %>
+                <h1>Feedback</h1>
+                <p>Total count: <%- feedbacks.length %>
                 </p>
                 <table class="table table-striped">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Author</th>
-                            <th scope="col"><span id="table__span">Actions</span></th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Message</th>
+                            <th scope="col"><span id="table__span">Control</span></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <% posts.forEach (function (post) { %>
+                        <% feedbacks.forEach (function (feedback) { %>
                             <td>
-                                <%- post["id"] %>
+                                <%- feedback['id'] %>
                             </td>
                             <td>
-                                <%- post["title"] %>
+                                <%- feedback['name'] %>
                             </td>
                             <td>
-                                <%- post["category"] %>
+                                <a href="mailto:<%- feedback['email'] %>"><%- feedback['email'] %></a>
                             </td>
                             <td>
-                                <%- post["author"] %>
+                                <%- feedback['body'] %>
                             </td>
-                            <td id="table__btn">
+                            <td id="table__btn feedback">
                                 <div class="btn__container">
                                     <div class="kebab">
                                         <figure></figure>
@@ -38,25 +38,15 @@
                                         <p class="cross">x</p>
                                         <figure></figure>
                                         <ul class="dropdown">
-                                            <li><a href="/posts/<%- post['id'] %>/show" class="btn btn-primary">Show</a>
-                                            </li>
-                                            <li><a href="/posts/<%- post['id'] %>/edit" id="btn-success__posts"
-                                                    class="btn btn-success">Edit</a></li>
-                                            <li><a href="/posts/<%- post['id'] %>/delete"
+                                            <li><a href="/feedback_admin/<%- feedback['id'] %>/delete"
                                                     class="btn btn-danger">Delete</a>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="btnblock__posts">
                                         <div class="btn__posts">
-                                            <a href="/posts/<%- post['id'] %>/show" class="btn btn-primary">Show</a>
-                                        </div>
-                                        <div class="btn__posts">
-                                            <a href="/posts/<%- post['id'] %>/edit" id="btn-success__posts"
-                                                class="btn btn-success">Edit</a>
-                                        </div>
-                                        <div class="btn__posts">
-                                            <a href="/posts/<%- post['id'] %>/delete" class="btn btn-danger">Delete</a>
+                                            <a href="/feedback_admin/<%- feedback['id'] %>/delete"
+                                                class="btn btn-danger">Delete</a>
                                         </div>
                                     </div>
                                 </div>
@@ -65,7 +55,6 @@
                             <% }) %>
                     </tbody>
                 </table>
-                <a href="/new_post" class="btn btn-success">Create New Post</a>
                 <!-- JavaScript -->
                 <%- include("partials/scriptblock.ejs") %>
 

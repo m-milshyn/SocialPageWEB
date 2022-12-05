@@ -117,6 +117,16 @@ html {
     color: #ffffff;
 }
 
+.register__button {
+    gap: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+.register__button a {
+    margin-left: 5px;
+}
+
 @media only screen and (min-device-width : 280px) and (max-device-width : 767px) {
 
     /*------------------------MAINBLOCK------------------------*/

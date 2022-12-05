@@ -3,6 +3,7 @@ const app = express()
 const db = require("./database.js")
 const bcrypt = require('bcrypt')
 const session = require('express-session')
+const { data } = require('jquery')
 app.use(session({
     secret: 'randomly generated secret',
 }))
@@ -25,6 +26,8 @@ function setCurrentUser(req, res, next) {
             if (row !== undefined) {
                 if (row["email"] === "admin@gmail.com") {
                     req.session.Admin = true
+                } else {
+                    req.session.Admin = false
                 }
                 res.locals.currentUser = row
                 req.session.userFailed = row["failed_login"]
@@ -79,10 +82,12 @@ app.get('/new_post', function (req, res) {
 })
 
 app.get('/register', function (req, res) {
+    req.session.Error = false
     res.render('register', { activePage: "register", error: "" })
 })
 
 app.get('/login', function (req, res) {
+    req.session.Error = false
     res.render('login', { activePage: "login", error: "" })
 })
 
@@ -101,6 +106,63 @@ app.get('/admin_user', function (req, res) {
         res.render('admin_user', { activePage: "admin_user", users: rows })
     });
 })
+app.get('/admin_user/:id/edit', function (req, res) {
+    var sql = "SELECT * FROM user WHERE user_id = ?"
+    var params = [req.params.id]
+    db.get(sql, params, (err, row) => {
+        if (err) {
+            res.status(400)
+            res.send("database error:" + err.message)
+            return;
+        }
+        req.session.AdminError = false
+        res.render('edit_user', { user: row, activePage: "admin_user", err: req.session.AdminError })
+    });
+})
+app.post('/admin_user/:id/edit', function (req, res) {
+    bcrypt.hash(req.body.password, 10, function (err, hash) {
+        var data = [
+            req.body.name,
+            req.body.email,
+            hash,
+            req.params.id
+        ]
+        var sql = "SELECT * FROM user WHERE (email = ? AND user_id <> ?)"
+        db.get(sql, [req.body.email, req.params.id], (err, row) => {
+            console.log(row)
+            if (row === undefined) {
+                db.run(
+                    `UPDATE user SET
+         name = COALESCE(?,name),
+         email = COALESCE(?,email),
+         password = COALESCE(?,password)
+         WHERE user_id = ?`,
+                    data,
+                    function (err, result) {
+                        if (err) {
+                            res.status(400)
+                            res.send("database error:" + err.message)
+                            return;
+                        }
+                        res.redirect('/admin_user')
+                    });
+            } else {
+                var sql = "SELECT * FROM user WHERE user_id = ?"
+                var params = [req.params.id]
+                db.get(sql, params, (err, row) => {
+                    if (err) {
+                        res.status(400)
+                        res.send("database error:" + err.message)
+                        return;
+                    }
+                    req.session.AdminError = true
+                    res.render('edit_user', { activePage: "admin_user", user: row, err: req.session.AdminError })
+                })
+            }
+
+        })
+    })
+})
 app.get('/admin_user/:id/delete', function (req, res) {
     var sql = "DELETE FROM user WHERE user_id = ?"
     var params = [req.params.id]
@@ -114,6 +176,28 @@ app.get('/admin_user/:id/delete', function (req, res) {
     });
 })
 
+app.get('/feedback_admin', function (req, res) {
+    var sql = "SELECT * from feedback"
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            req.status(400)
+            res.send("database error:" + err.message)
+        }
+        res.render('feedback_admin', { activePage: "feedback_admin", feedbacks: rows })
+    });
+})
+app.get('/feedback_admin/:id/delete', function (req, res) {
+    var sql = "DELETE FROM feedback WHERE id = ?"
+    var params = [req.params.id]
+    db.get(sql, params, (err, row) => {
+        if (err) {
+            res.status(400)
+            res.send("database error:" + err.message)
+            return;
+        }
+        res.redirect('/feedback_admin')
+    });
+})
 
 app.get('/posts', function (req, res) {
     if (req.session.Admin) {
@@ -126,17 +210,18 @@ app.get('/posts', function (req, res) {
             }
             res.render('posts', { activePage: "posts", posts: rows })
         });
+    } else {
+        var params = [req.session.userId]
+        var sql = "SELECT * FROM posts WHERE id_user = ?"
+        db.all(sql, params, (err, rows) => {
+            if (err) {
+                res.status(400)
+                res.send("database error:" + err.message)
+                return;
+            }
+            res.render('posts', { activePage: "posts", posts: rows })
+        });
     }
-    var params = [req.session.userId]
-    var sql = "SELECT * FROM posts WHERE id_user = ?"
-    db.all(sql, params, (err, rows) => {
-        if (err) {
-            res.status(400)
-            res.send("database error:" + err.message)
-            return;
-        }
-        res.render('posts', { activePage: "posts", posts: rows })
-    });
 })
 app.get('/posts/:id/edit', function (req, res) {
     var sql = "SELECT * FROM posts WHERE id = ?"
@@ -155,7 +240,20 @@ app.get('/new_post', function (req, res) {
 })
 
 app.post('/contact', function (req, res) {
-    res.render('contact_answer', { activePage: "contact", formData: req.body })
+    var data = [
+        req.body.name,
+        req.body.email,
+        req.body.message
+    ]
+    var sql = "INSERT INTO feedback (name, email, body) VALUES (?,?,?)"
+    db.run(sql, data, function (err, result) {
+        if (err) {
+            res.status(400)
+            res.send("database error:" + err.message)
+            return;
+        }
+        res.render('contact_answer', { activePage: "contact", formData: req.body })
+    });
 })
 
 app.post('/new_post', function (req, res) {
@@ -235,7 +333,7 @@ app.get('/posts/:id/show', function (req, res) {
                 res.send("database error:" + err.message)
                 return;
             }
-            res.render("show_post", { activePage: "posts", Post: row, comments: rows, ActiveUser: req.session.userId })
+            res.render("show_post", { activePage: "posts", Post: row, comments: rows, ActiveUser: req.session.userId, error: req.session.Error, Admin: req.session.Admin })
         });
     });
 })
@@ -245,37 +343,36 @@ app.post('/posts/:id/show/comment', function (req, res) {
     if (req.session.loggedIn) {
         var data = [
             req.params.id,
+            req.session.userId,
             req.body.comment_author,
             req.body.comment_body
         ]
-        var sql = "INSERT INTO comment (id_post, comment_author, comment_body) VALUES (?,?,?)"
+        var sql = "INSERT INTO comment (id_post, user_id, comment_author, comment_body) VALUES (?,?,?,?)"
         db.run(sql, data, function (err, result) {
             if (err) {
                 res.status(400)
                 res.send("database error:" + err.message)
                 return;
             }
+            req.session.Error = false
             res.redirect("/posts/" + postid + "/show")
         });
     } else {
-        res.render("/posts/" + postid + "/show", { activePage: "posts", })
+        req.session.Error = true
+        res.redirect("/posts/" + postid + "/show")
     }
 })
 
 app.get('/posts/:id/show/:comment_id/delete', function (req, res) {
-    if (req.session.loggedIn) {
-        var sql = "DELETE FROM comment WHERE (comment_id = ? AND user_id = ?)"
-        var postid = req.params.id
-        var params = [req.params.comment_id, req.session.userId]
-        db.get(sql, params, (err, row) => {
-            if (err) {
-                res.status(400)
-                res.send("database error:" + err.message)
-                return;
-            }
-            res.redirect('/posts/' + postid + '/show')
-        });
-    }
+    var sql = "DELETE FROM comment WHERE comment_id = ?"
+    db.get(sql, [req.params.comment_id], (err, row) => {
+        if (err) {
+            res.status(400)
+            res.send("database error:" + err.message)
+            return;
+        }
+        res.redirect('/posts/' + req.params.id + '/show')
+    });
 })
 
 app.post('/register', function (req, res) {
@@ -296,12 +393,27 @@ app.post('/register', function (req, res) {
                         res.send("database error:" + err.message)
                         return;
                     }
-                    res.render('register_answer', { activePage: "register", formData: req.body, error: "" })
+                    var sql = "SELECT * FROM user WHERE email = ?"
+                    db.get(sql, [req.body.email], (err, row) => {
+                        req.session.userId = row["user_id"]
+                        req.session.userName = row["name"]
+                        req.session.loggedIn = true
+                        var params = [req.session.userId]
+                        sql = "SELECT * FROM posts WHERE id_user = ?"
+                        db.all(sql, params, (err, rows) => {
+                            if (err) {
+                                res.status(400)
+                                res.send("database error:" + err.message)
+                                return;
+                            }
+                            res.redirect("/posts")
+                        });
+                    })
                 });
             });
         }
         else {
-            res.render('register', { activePage: "register", error: "A user with this email address already exists" })
+            res.render('register', { activePage: "register", error: "User with this email address already exists" })
         }
     });
 })

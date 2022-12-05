@@ -1,22 +1,54 @@
+.kebab {
+    visibility: hidden;
+}
+.btn__container {
+    width: max-content;
+    position: absolute;
+}
 .btnblock__posts {
     width: max-content;
+    top: -45px;
     gap: 10px;
     display: flex;
+    position: relative;
     flex-direction: row;
+}
+#table__btn {
+    width: 300px;
+}
+#table__btn.feedback {
+    width: 100px;
 }
 .btn__posts {
     width: max-content;
 }
 @media (max-width: 767px) {
     .btnblock__posts {
-        flex-direction: column;
+        visibility: hidden;
+    }
+    #table__span {
+        display: hidden;
+        position: absolute;
+        top: -1000px;
+    }
+    .table.table-striped {
+        word-break: break-all;
+    }
+    .btn__container {
+        width: 10px;
+    }
+    .btnblock__posts {
+        visibility: hidden;
+        top: -1000px;
+        left: -300px;
+    }
+    .kebab {
+        visibility: visible;
+    }
+    #table__btn {
+        width: 10px;
     }
     .btn__posts {
         width: 90px;
-    }
-    #btn-success__posts, .btn.btn-primary, .btn.btn-danger {
-        width: 90px;
-        line-height: 15px;
-        font-size: 15px;
     }
 }

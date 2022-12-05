@@ -3,32 +3,37 @@
     <body>
         <%- include("partials/mainheader.ejs") -%>
             <div class="container">
-                <form method="post" action="/admin_user/<%- user['user_id'] %>/edit">
-                    <div class="form-group">
-                        <label for="name">User name</label>
-                        <input type="text" name="name" class="form-control" id="name" placeholder="Css 3"
-                            value="<%- user['name'] %>" required>
+                <% if (err) { %>
+                    <div class="alert alert-danger" role="alert">
+                        You are trying to change your email to one that is already registered on this site
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="text" name="email" class="form-control" id="author" placeholder="John"
-                            value="<%- user['email'] %>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" name="password" class="form-control" id="password" rows="3" value=""
-                            required>
-                    </div>
-                    <div class="form-group">
-                        <label for="failed_login">Login fail count</label>
-                        <input type="text" name="failed_login" class="form-control" id="failed_login"
-                            value="<%- user['failed_login'] %>" rows="3" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Update Post</button>
-                </form>
+                    <% } %>
+                        <form method="post" action="/admin_user/<%- user['user_id'] %>/edit">
+                            <div class="form-group">
+                                <label for="name">User name</label>
+                                <input type="text" name="name" class="form-control" id="name" placeholder="Css 3"
+                                    value="<%- user['name'] %>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="text" name="email" class="form-control" id="author" placeholder="John"
+                                    value="<%- user['email'] %>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" name="password" class="form-control" id="password" rows="3"
+                                    value="" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="failed_login">Login fail count</label>
+                                <input type="text" name="failed_login" class="form-control" id="failed_login"
+                                    value="<%- user['failed_login'] %>" rows="3" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Post</button>
+                        </form>
 
-                <!-- JavaScript -->
-                <%- include("partials/scriptblock.ejs") %>
+                        <!-- JavaScript -->
+                        <%- include("partials/scriptblock.ejs") %>
             </div>
     </body>
 

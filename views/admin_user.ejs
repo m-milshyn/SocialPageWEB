@@ -12,8 +12,8 @@
                             <th scope="col">#</th>
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Failed_login</th>
-                            <th scope="col">Control</th>
+                            <th scope="col">Failed login</th>
+                            <th scope="col"><span id="table__span">Control</span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,15 +30,31 @@
                             <td>
                                 <%- user["failed_login"] %>
                             </td>
-                            <td>
-                                <div class="btnblock__posts">
-                                    <div class="btn__posts">
-                                        <a href="/admin_user/<%- user['user_id'] %>/edit" id="btn-success__posts"
-                                            class="btn btn-success">Edit</a>
+                            <td id="table__btn">
+                                <div class="btn__container">
+                                    <div class="kebab">
+                                        <figure></figure>
+                                        <figure class="middle"></figure>
+                                        <p class="cross">x</p>
+                                        <figure></figure>
+                                        <ul class="dropdown">
+                                            <li><a href="/admin_user/<%- user['user_id'] %>/edit"
+                                                    id="btn-success__posts" class="btn btn-success">Edit</a>
+                                            </li>
+                                            <li><a href="/admin_user/<%- user['user_id'] %>/delete"
+                                                    class="btn btn-danger">Delete</a>
+                                            </li>
+                                        </ul>
                                     </div>
-                                    <div class="btn__posts">
-                                        <a href="/admin_user/<%- user['user_id'] %>/delete"
-                                            class="btn btn-danger">Delete</a>
+                                    <div class="btnblock__posts">
+                                        <div class="btn__posts">
+                                            <a href="/admin_user/<%- user['user_id'] %>/edit" id="btn-success__posts"
+                                                class="btn btn-success">Edit</a>
+                                        </div>
+                                        <div class="btn__posts">
+                                            <a href="/admin_user/<%- user['user_id'] %>/delete"
+                                                class="btn btn-danger">Delete</a>
+                                        </div>
                                     </div>
                                 </div>
                             </td>
@@ -46,7 +62,6 @@
                             <% }) %>
                     </tbody>
                 </table>
-                <a href="/new_post" class="btn btn-success">Create New Post</a>
                 <!-- JavaScript -->
                 <%- include("partials/scriptblock.ejs") %>
 
