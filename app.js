@@ -548,4 +548,7 @@ app.post('/search/sort', function (req, res) {
     res.render('search', { activePage: "search", posts: req.session.Search })
 })
 
-app.listen(3000)
+const port = parseInt(process.env.PORT) || 8080;
+app.listen(port, () => {
+    console.log(`SocialWEB: listening on port ${port}`);
+});
